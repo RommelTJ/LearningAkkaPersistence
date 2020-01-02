@@ -32,5 +32,6 @@ object ScalaRecap extends App {
 
   List(1, 2, 3).map(anIncrementer)
   // HOF: Map, flatMap, filter
+  // For-comprehensions, chains of map, flatmap, filter
 
 }

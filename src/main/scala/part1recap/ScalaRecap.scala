@@ -1,6 +1,7 @@
 package part1recap
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 object ScalaRecap extends App {
 
@@ -62,6 +63,12 @@ object ScalaRecap extends App {
     // long computation here
     // executed on SOME other thread
     42
+  }
+  // map, flatMap, filter + other niceties e.g. recover / recoverWith
+
+  future.onComplete {
+    case Success(value) => println(s"I found the meaning of life: $value")
+    case Failure(exception) => println(s"I found $exception while searching for the meaning of life.")
   }
 
 }

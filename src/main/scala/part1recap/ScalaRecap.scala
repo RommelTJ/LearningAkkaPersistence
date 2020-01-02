@@ -16,4 +16,6 @@ object ScalaRecap extends App {
     def eat(a: Animal): Unit
   }
 
+  object Carnivore
+
 }

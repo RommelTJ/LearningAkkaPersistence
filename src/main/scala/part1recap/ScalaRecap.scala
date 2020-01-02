@@ -44,4 +44,11 @@ object ScalaRecap extends App {
     case _ => "unknown"
   }
 
+  try {
+    // code that can throw an exception
+    throw new RuntimeException
+  } catch {
+    case e: Exception => println("I caught one!")
+  }
+
 }

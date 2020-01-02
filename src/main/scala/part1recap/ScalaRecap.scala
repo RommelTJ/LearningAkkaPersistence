@@ -18,4 +18,7 @@ object ScalaRecap extends App {
 
   object Carnivore
 
+  // Generics
+  abstract class MyList[+A]
+
 }

@@ -21,4 +21,8 @@ object ScalaRecap extends App {
   // Generics
   abstract class MyList[+A]
 
+  // Method Notations
+  1 + 2 // infix notation
+  1.+(2)
+
 }

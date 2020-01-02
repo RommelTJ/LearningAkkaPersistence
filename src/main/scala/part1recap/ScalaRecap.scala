@@ -10,4 +10,10 @@ object ScalaRecap extends App {
   // instructions vs expressions
   // types + type inference
 
+  // OO features of Scala
+  class Animal
+  trait Carnivore {
+    def eat(a: Animal): Unit
+  }
+
 }

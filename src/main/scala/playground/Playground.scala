@@ -6,8 +6,8 @@ import akka.persistence.PersistentActor
 object Playground extends App {
 
   /**
-    * A simple persistent actor that just logs all commands and events.
-    */
+   * A simple persistent actor that just logs all commands and events.
+   */
   class SimplePersistentActor extends PersistentActor with ActorLogging {
     override def persistenceId: String = "simple-persistence"
 

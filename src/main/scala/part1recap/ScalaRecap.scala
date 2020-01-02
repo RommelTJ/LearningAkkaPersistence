@@ -1,5 +1,7 @@
 package part1recap
 
+import scala.concurrent.Future
+
 object ScalaRecap extends App {
 
   val aCondition: Boolean = false
@@ -55,5 +57,11 @@ object ScalaRecap extends App {
    * Scala advanced features
    */
   // Multithreading
+  import scala.concurrent.ExecutionContext.Implicits.global
+  val future = Future {
+    // long computation here
+    // executed on SOME other thread
+    42
+  }
 
 }

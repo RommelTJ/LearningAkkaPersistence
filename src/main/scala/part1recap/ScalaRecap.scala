@@ -85,4 +85,9 @@ object ScalaRecap extends App {
     case _ => println("Confused...")
   }
 
+  // Implicits
+  implicit val timeout = 3000
+  def setTimeout(f: () => Unit)(implicit timeout: Int) = f()
+  setTimeout(() => println("Timeout")) // Don't need to supply other arg list because it is injected by the compiler
+
 }

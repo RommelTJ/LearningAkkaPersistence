@@ -36,4 +36,12 @@ object ScalaRecap extends App {
 
   // Monads: Option, Try
 
+  // Pattern matching
+  val unknown: Any = 2
+  val order = unknown match {
+    case 1 => "first"
+    case 2 => "second"
+    case _ => "unknown"
+  }
+
 }

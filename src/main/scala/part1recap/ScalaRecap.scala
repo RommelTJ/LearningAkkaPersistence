@@ -69,6 +69,13 @@ object ScalaRecap extends App {
   future.onComplete {
     case Success(value) => println(s"I found the meaning of life: $value")
     case Failure(exception) => println(s"I found $exception while searching for the meaning of life.")
-  }
+  } // executed on SOME thread
+
+  // partial functions
+  val partialFunction: PartialFunction[Int, Int] = {
+    case 1 => 42
+    case 2 => 65
+    case _ => 999
+  } // based on Pattern Matching
 
 }

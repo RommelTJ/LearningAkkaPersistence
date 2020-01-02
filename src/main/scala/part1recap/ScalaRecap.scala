@@ -90,4 +90,15 @@ object ScalaRecap extends App {
   def setTimeout(f: () => Unit)(implicit timeout: Int) = f()
   setTimeout(() => println("Timeout")) // Don't need to supply other arg list because it is injected by the compiler
 
+  // conversions
+  // 1) Implicit methods
+  case class Person(name: String) {
+    def greet: String = s"Hi, my name is $name"
+  }
+
+  implicit def fromStringToPerson(name: String) = Person(name)
+
+  "Peter".greet
+  // fromStringToPerson("Peter").greet
+
 }

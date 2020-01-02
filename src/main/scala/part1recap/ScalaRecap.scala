@@ -7,5 +7,6 @@ object ScalaRecap extends App {
     // code
     if (x > 4) 42 else 65
   }
+  // instructions vs expressions
 
 }

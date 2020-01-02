@@ -101,4 +101,11 @@ object ScalaRecap extends App {
   "Peter".greet
   // fromStringToPerson("Peter").greet
 
+  // 2) Implicit classes
+  implicit class Dog(name: String) {
+    def bark = println("Bark!")
+  }
+  "Lassie".bark
+  // new Dog("Lassie").bark
+
 }

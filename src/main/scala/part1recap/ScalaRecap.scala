@@ -78,4 +78,11 @@ object ScalaRecap extends App {
     case _ => 999
   } // based on Pattern Matching
 
+  // Type aliases
+  type AkkaReceive = PartialFunction[Any, Unit]
+  def receive: AkkaReceive = {
+    case 1 => println("Hello")
+    case _ => println("Confused...")
+  }
+
 }

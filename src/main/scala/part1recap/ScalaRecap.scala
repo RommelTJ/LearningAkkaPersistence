@@ -28,5 +28,9 @@ object ScalaRecap extends App {
   // Functional Programming
   // val anIncrementer: Function1[Int, Int]
   val anIncrementer: Int => Int = (x: Int) => x + 1
+  anIncrementer(1)
+
+  List(1, 2, 3).map(anIncrementer)
+  // HOF: Map, flatMap, filter
 
 }

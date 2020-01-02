@@ -8,5 +8,6 @@ object ScalaRecap extends App {
     if (x > 4) 42 else 65
   }
   // instructions vs expressions
+  // types + type inference
 
 }

@@ -25,4 +25,8 @@ object ScalaRecap extends App {
   1 + 2 // infix notation
   1.+(2)
 
+  // Functional Programming
+  // val anIncrementer: Function1[Int, Int]
+  val anIncrementer: Int => Int = (x: Int) => x + 1
+
 }

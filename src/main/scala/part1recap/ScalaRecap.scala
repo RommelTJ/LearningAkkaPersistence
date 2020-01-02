@@ -34,4 +34,6 @@ object ScalaRecap extends App {
   // HOF: Map, flatMap, filter
   // For-comprehensions, chains of map, flatmap, filter
 
+  // Monads: Option, Try
+
 }

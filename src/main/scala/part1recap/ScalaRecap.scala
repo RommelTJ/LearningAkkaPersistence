@@ -51,4 +51,9 @@ object ScalaRecap extends App {
     case e: Exception => println("I caught one!")
   }
 
+  /**
+   * Scala advanced features
+   */
+  // Multithreading
+
 }

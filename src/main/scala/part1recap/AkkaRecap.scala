@@ -6,7 +6,12 @@ object AkkaRecap extends App {
 
   class SimpleActor extends Actor {
     override def receive: Receive = {
+      case "change" => context.become(anotherHandler)
       case message => println(s"I received: $message")
+    }
+
+    def anotherHandler: Receive = {
+      case message => println(s"In another receive handler with message: $message")
     }
   }
 
@@ -22,5 +27,7 @@ object AkkaRecap extends App {
   // Many actors (in the millions) can share a few dozen threads
   // Each message is processed/handled ATOMICALLY
   // No need for locks
+
+
 
 }

@@ -20,5 +20,7 @@ object AkkaRecap extends App {
 
   // Messages are sent asynchronously
   // Many actors (in the millions) can share a few dozen threads
+  // Each message is processed/handled ATOMICALLY
+  // No need for locks
 
 }

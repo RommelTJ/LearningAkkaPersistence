@@ -6,6 +6,9 @@ object AkkaRecap extends App {
 
   class SimpleActor extends Actor with Stash {
     override def receive: Receive = {
+      case "createChild" =>
+        val childActor = context.actorOf(Props[SimpleActor], "myChild")
+        childActor ! "hello"
       case "stashThis" => stash()
       case "change handler now" =>
         unstashAll()
@@ -33,5 +36,6 @@ object AkkaRecap extends App {
   // No need for locks
 
   // changing actor behavior + stashing
+  // Actors can spawn other actors
 
 }

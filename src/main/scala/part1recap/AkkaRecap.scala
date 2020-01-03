@@ -20,6 +20,10 @@ object AkkaRecap extends App {
     def anotherHandler: Receive = {
       case message => println(s"In another receive handler with message: $message")
     }
+
+    override def preStart(): Unit = {
+      println(s"I'm starting")
+    }
   }
 
   // Actor encapsulation

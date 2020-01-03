@@ -1,6 +1,6 @@
 package part1recap
 
-import akka.actor.{Actor, ActorSystem, Props, Stash}
+import akka.actor.{Actor, ActorSystem, PoisonPill, Props, Stash}
 
 object AkkaRecap extends App {
 
@@ -45,5 +45,9 @@ object AkkaRecap extends App {
 
   // Actors have a defined lifecycle:
   // They can be started, stopped, suspended, resumed, restarted.
+
+  // Stopping Actors
+  // context.stop
+  actor ! PoisonPill
 
 }

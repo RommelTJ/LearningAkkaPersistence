@@ -1,10 +1,10 @@
 package part1recap
 
-import akka.actor.{Actor, ActorSystem, PoisonPill, Props, Stash}
+import akka.actor.{Actor, ActorLogging, ActorSystem, PoisonPill, Props, Stash}
 
 object AkkaRecap extends App {
 
-  class SimpleActor extends Actor with Stash {
+  class SimpleActor extends Actor with Stash with ActorLogging {
     override def receive: Receive = {
       case "createChild" =>
         val childActor = context.actorOf(Props[SimpleActor], "myChild")
@@ -22,7 +22,7 @@ object AkkaRecap extends App {
     }
 
     override def preStart(): Unit = {
-      println(s"I'm starting")
+      log.info(s"I'm starting")
     }
   }
 
@@ -49,5 +49,7 @@ object AkkaRecap extends App {
   // Stopping Actors
   // context.stop
   actor ! PoisonPill
+
+  // Logging
 
 }

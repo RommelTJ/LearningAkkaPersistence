@@ -1,11 +1,15 @@
 package part1recap
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, ActorSystem, Props, Stash}
 
 object AkkaRecap extends App {
 
-  class SimpleActor extends Actor {
+  class SimpleActor extends Actor with Stash {
     override def receive: Receive = {
+      case "stashThis" => stash()
+      case "change handler now" =>
+        unstashAll()
+        context.become(anotherHandler)
       case "change" => context.become(anotherHandler)
       case message => println(s"I received: $message")
     }
@@ -28,6 +32,6 @@ object AkkaRecap extends App {
   // Each message is processed/handled ATOMICALLY
   // No need for locks
 
-
+  // changing actor behavior + stashing
 
 }

@@ -18,4 +18,7 @@ object AkkaRecap extends App {
   // Sending messages
   actor ! "hello"
 
+  // Messages are sent asynchronously
+  // Many actors (in the millions) can share a few dozen threads
+
 }

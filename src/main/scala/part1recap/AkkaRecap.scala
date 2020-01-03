@@ -39,4 +39,7 @@ object AkkaRecap extends App {
   // Actors can spawn other actors
   // Guardians: /system, /user, / = root guardian
 
+  // Actors have a defined lifecycle:
+  // They can be started, stopped, suspended, resumed, restarted.
+
 }

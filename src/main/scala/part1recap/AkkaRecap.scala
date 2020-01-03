@@ -63,4 +63,7 @@ object AkkaRecap extends App {
   // Supervision
   // How parent actors are going to respond to child actor failures
 
+  // Configure Akka infrastructure
+  // dispatchers, routers, mailboxes
+
 }

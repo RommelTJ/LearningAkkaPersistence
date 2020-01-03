@@ -79,4 +79,9 @@ object AkkaRecap extends App {
   implicit val timeout = Timeout( 3 seconds)
   val future = actor ? "question"
 
+  // The Pipe pattern
+  import akka.pattern.pipe
+  val anotherActor = system.actorOf(Props[SimpleActor], "anotherSimpleActor")
+  future.mapTo[String].pipeTo(anotherActor)
+
 }

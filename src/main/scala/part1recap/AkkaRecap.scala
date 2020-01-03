@@ -1,6 +1,7 @@
 package part1recap
 
-import akka.actor.{Actor, ActorLogging, ActorSystem, PoisonPill, Props, Stash}
+import akka.actor.SupervisorStrategy.{Restart, Stop}
+import akka.actor.{Actor, ActorLogging, ActorSystem, OneForOneStrategy, PoisonPill, Props, Stash, SupervisorStrategy}
 
 object AkkaRecap extends App {
 
@@ -23,6 +24,13 @@ object AkkaRecap extends App {
 
     override def preStart(): Unit = {
       log.info(s"I'm starting")
+    }
+
+    override def supervisorStrategy: SupervisorStrategy = {
+      OneForOneStrategy() {
+        case _: RuntimeException => Restart
+        case _ => Stop
+      }
     }
   }
 
@@ -51,5 +59,8 @@ object AkkaRecap extends App {
   actor ! PoisonPill
 
   // Logging
+
+  // Supervision
+  // How parent actors are going to respond to child actor failures
 
 }

@@ -37,5 +37,6 @@ object AkkaRecap extends App {
 
   // changing actor behavior + stashing
   // Actors can spawn other actors
+  // Guardians: /system, /user, / = root guardian
 
 }

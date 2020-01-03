@@ -15,4 +15,7 @@ object AkkaRecap extends App {
   // new SimpleActor // throws Exception! You cannot create an instance using the constructor.
   val actor = system.actorOf(Props[SimpleActor], "simpleActor")
 
+  // Sending messages
+  actor ! "hello"
+
 }

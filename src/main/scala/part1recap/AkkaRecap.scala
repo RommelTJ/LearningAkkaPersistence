@@ -2,6 +2,7 @@ package part1recap
 
 import akka.actor.SupervisorStrategy.{Restart, Stop}
 import akka.actor.{Actor, ActorLogging, ActorSystem, OneForOneStrategy, PoisonPill, Props, Stash, SupervisorStrategy}
+import akka.util.Timeout
 
 object AkkaRecap extends App {
 
@@ -72,5 +73,10 @@ object AkkaRecap extends App {
   system.scheduler.scheduleOnce(2 seconds) {
     actor ! "delayed happy birthday"
   }
+
+  // Akka patterns including FSM + Ask Pattern
+  import akka.pattern.ask
+  implicit val timeout = Timeout( 3 seconds)
+  val future = actor ? "question"
 
 }

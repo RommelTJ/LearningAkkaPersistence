@@ -29,4 +29,8 @@ object PersistentActors extends App {
   val system = ActorSystem("PersistentActors")
   val accountant = system.actorOf(Props[Accountant], "simpleAccountant")
 
+  for (i <- 1 to 10) {
+    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
+  }
+
 }

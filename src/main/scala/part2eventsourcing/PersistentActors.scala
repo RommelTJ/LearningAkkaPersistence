@@ -36,8 +36,13 @@ object PersistentActors extends App {
         log.info(s"Received invoice for amount: $amount")
         // val event = InvoiceRecorded(latestInvoiceId, recipient, date, amount)
         persist(InvoiceRecorded(latestInvoiceId, recipient, date, amount)){ e =>
+          // Update state
+          // SAFE to access mutable state because you don't have race conditions
+          // Akka persistence guarantees that no other threads are accessing the actor during the callback
           latestInvoiceId += 1
           totalAmount += amount
+          // We can even correctly identify the sender of the Command
+          sender() ! "PersistenceACK"
           log.info(s"Persisted $e as invoice #${e.id}, for total amount: $totalAmount")
         }
     }

@@ -48,6 +48,7 @@ object PersistentActors extends App {
       case InvoiceRecorded(id, _, _, amount) =>
         latestInvoiceId = id
         totalAmount += amount
+        log.info(s"Recovered invoice #$id for amount: $amount, total amount: $totalAmount")
     }
 
   }
@@ -55,8 +56,8 @@ object PersistentActors extends App {
   val system = ActorSystem("PersistentActors")
   val accountant = system.actorOf(Props[Accountant], "simpleAccountant")
 
-  for (i <- 1 to 10) {
-    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
-  }
+//  for (i <- 1 to 10) {
+//    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
+//  }
 
 }

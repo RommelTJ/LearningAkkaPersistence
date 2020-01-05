@@ -43,7 +43,12 @@ object PersistentActors extends App {
     }
 
     // The handler that is called on recovery.
-    override def receiveRecover: Receive = ???
+    override def receiveRecover: Receive = {
+      // Best practice: Follow the logic in the persist steps of receiveCommand
+      case InvoiceRecorded(id, _, _, amount) =>
+        latestInvoiceId = id
+        totalAmount += amount
+    }
 
   }
 

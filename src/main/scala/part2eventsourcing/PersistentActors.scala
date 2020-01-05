@@ -1,5 +1,7 @@
 package part2eventsourcing
 
+import java.util.Date
+
 import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
@@ -8,6 +10,9 @@ object PersistentActors extends App {
   /**
    * Scenario: We have a business and an accountant which keeps track of our invoices.
    */
+
+  case class Invoice(recipient: String, date: Date, amount: Int)
+
   class Accountant extends PersistentActor with ActorLogging {
 
     // How the events persistent by this Actor will be identified.

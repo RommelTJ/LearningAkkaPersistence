@@ -13,6 +13,7 @@ object PersistentActors extends App {
     // How the events persistent by this Actor will be identified.
     override def persistenceId: String = "simple-accountant" // best practice: Make it unique
 
+    // The normal receive method.
     override def receiveCommand: Receive = ???
 
     override def receiveRecover: Receive = ???

@@ -34,8 +34,8 @@ object PersistentActors extends App {
         // 2) You persist the event, then pass in a callback that will get triggered once the event is written
         // 3) You update the Actor's state when the event has persisted.
         log.info(s"Received invoice for amount: $amount")
-        val event = InvoiceRecorded(latestInvoiceId, recipient, date, amount)
-        persist(event){ e =>
+        // val event = InvoiceRecorded(latestInvoiceId, recipient, date, amount)
+        persist(InvoiceRecorded(latestInvoiceId, recipient, date, amount)){ e =>
           latestInvoiceId += 1
           totalAmount += amount
           log.info(s"Persisted $e as invoice #${e.id}, for total amount: $totalAmount")

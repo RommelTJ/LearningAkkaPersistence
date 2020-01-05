@@ -47,6 +47,9 @@ object PersistentActors extends App {
           sender() ! "PersistenceACK"
           log.info(s"Persisted $e as invoice #${e.id}, for total amount: $totalAmount")
         }
+      // You don't need to persist events. You can act like a normal actor
+      case "print" =>
+        log.info(s"Latest invoice id: $latestInvoiceId, total amount: $totalAmount")
     }
 
     // The handler that is called on recovery.

@@ -16,6 +16,7 @@ object PersistentActors extends App {
     // The normal receive method.
     override def receiveCommand: Receive = ???
 
+    // The handler that is called on recovery.
     override def receiveRecover: Receive = ???
 
   }

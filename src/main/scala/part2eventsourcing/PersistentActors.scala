@@ -10,7 +10,8 @@ object PersistentActors extends App {
    */
   class Accountant extends PersistentActor with ActorLogging {
 
-    override def persistenceId: String = ???
+    // How the events persistent by this Actor will be identified.
+    override def persistenceId: String = "simple-accountant" // best practice: Make it unique
 
     override def receiveCommand: Receive = ???
 

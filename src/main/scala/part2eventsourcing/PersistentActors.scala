@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 object PersistentActors extends App {
@@ -20,5 +20,8 @@ object PersistentActors extends App {
     override def receiveRecover: Receive = ???
 
   }
+
+  val system = ActorSystem("PersistentActors")
+  val accountant = system.actorOf(Props[Accountant], "simpleAccountant")
 
 }

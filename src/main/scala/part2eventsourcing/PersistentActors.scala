@@ -61,6 +61,10 @@ object PersistentActors extends App {
         log.info(s"Recovered invoice #$id for amount: $amount, total amount: $totalAmount")
     }
 
+    override protected def onPersistFailure(cause: Throwable, event: Any, seqNr: Long): Unit = {
+      log.error(s"Fail to persist $event because of $cause")
+      super.onPersistFailure(cause, event, seqNr)
+    }
   }
 
   val system = ActorSystem("PersistentActors")
@@ -69,5 +73,9 @@ object PersistentActors extends App {
 //  for (i <- 1 to 10) {
 //    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
 //  }
+
+  /*
+     Persistence failures
+   */
 
 }

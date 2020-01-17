@@ -61,6 +61,9 @@ object PersistentActors extends App {
         log.info(s"Recovered invoice #$id for amount: $amount, total amount: $totalAmount")
     }
 
+    // This method is called if persisting failed.
+    // The actor will be STOPPED (regardless of the supervision strategy).
+    // Best practice: Start the actor again after a while (use Backoff supervisor)
     override protected def onPersistFailure(cause: Throwable, event: Any, seqNr: Long): Unit = {
       log.error(s"Fail to persist $event because of $cause")
       super.onPersistFailure(cause, event, seqNr)

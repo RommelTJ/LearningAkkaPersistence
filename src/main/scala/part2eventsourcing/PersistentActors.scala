@@ -68,6 +68,13 @@ object PersistentActors extends App {
       log.error(s"Fail to persist $event because of $cause")
       super.onPersistFailure(cause, event, seqNr)
     }
+
+    // Called if the JOURNAL fails to persist the event. The actor is RESUMED.
+    override protected def onPersistRejected(cause: Throwable, event: Any, seqNr: Long): Unit = {
+      log.error(s"Persist rejected for $event because of $cause")
+      super.onPersistRejected(cause, event, seqNr)
+    }
+
   }
 
   val system = ActorSystem("PersistentActors")

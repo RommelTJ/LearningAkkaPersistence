@@ -48,6 +48,20 @@ object PersistentActors extends App {
           sender() ! "PersistenceACK"
           log.info(s"Persisted $e as invoice #${e.id}, for total amount: $totalAmount")
         }
+      case InvoiceBulk(invoices) =>
+        // 1) Create events (plural)
+        val invoiceIds = latestInvoiceId to (latestInvoiceId + invoices.size)
+        val events = invoices.zip(invoiceIds).map { pair =>
+          val id = pair._2
+          val invoice = pair._1
+          InvoiceRecorded(id, invoice.recipient, invoice.date, invoice.amount)
+        }
+        // 2) Persist all the events
+        persistAll(events) { e =>
+          // 3) Update the actor state when each event is persisted
+          latestInvoiceId += 1
+          totalAmount += e.amount
+        }
       // You don't need to persist events. You can act like a normal actor
       case "print" =>
         log.info(s"Latest invoice id: $latestInvoiceId, total amount: $totalAmount")

@@ -35,6 +35,8 @@ object PersistentActorsExercise extends App {
             log.info(s"Persisted: $vote")
             handleInternalStateChange(citizenPID, candidate)
           }
+        } else {
+          log.warning(s"Citizen: $citizenPID is trying to vote multiple times!")
         }
       case "print" => log.info(s"Current state: citizens: $citizens, poll: $poll")
     }
@@ -69,6 +71,7 @@ object PersistentActorsExercise extends App {
 //    votingStation ! Vote(citizen, votesMap(citizen))
 //  })
 
+  votingStation ! Vote("Daniel", "Daniel")
   votingStation ! "print"
 
 }

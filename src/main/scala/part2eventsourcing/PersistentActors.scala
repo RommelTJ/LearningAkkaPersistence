@@ -61,6 +61,7 @@ object PersistentActors extends App {
           // 3) Update the actor state when each event is persisted
           latestInvoiceId += 1
           totalAmount += e.amount
+          log.info(s"Persisted SINGLE $e as invoice #${e.id}, for total amount: $totalAmount")
         }
       // You don't need to persist events. You can act like a normal actor
       case "print" =>
@@ -98,6 +99,8 @@ object PersistentActors extends App {
 //  for (i <- 1 to 10) {
 //    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
 //  }
+  val newInvoices = for (i <- 1 to 5) yield Invoice("The awesome chairs", new Date, i * 2000)
+  accountant ! InvoiceBulk(newInvoices.toList)
 
   /*
      Persistence failures

@@ -110,5 +110,12 @@ object PersistentActors extends App {
    */
   val newInvoices = for (i <- 1 to 5) yield Invoice("The awesome chairs", new Date, i * 2000)
   // accountant ! InvoiceBulk(newInvoices.toList)
-  
+
+  /*
+     NEVER EVER CALL PERSIST OR PERSISTALL FROM FUTURES. YOU RISK BREAKING ACTOR ENCAPSULATION.
+     The actor thread is free to process messages while you're persisting. If the normal actor thread also calls persist,
+     you suddenly have two threads persisting events simultaneously. Since event order is non-deterministic, you risk
+     corrupting the actor state.
+   */
+
 }

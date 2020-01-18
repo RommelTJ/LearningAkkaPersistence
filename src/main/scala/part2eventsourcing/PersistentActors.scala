@@ -99,8 +99,6 @@ object PersistentActors extends App {
 //  for (i <- 1 to 10) {
 //    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
 //  }
-  val newInvoices = for (i <- 1 to 5) yield Invoice("The awesome chairs", new Date, i * 2000)
-  accountant ! InvoiceBulk(newInvoices.toList)
 
   /*
      Persistence failures
@@ -110,5 +108,7 @@ object PersistentActors extends App {
    *
    * persistAll
    */
-
+  val newInvoices = for (i <- 1 to 5) yield Invoice("The awesome chairs", new Date, i * 2000)
+  // accountant ! InvoiceBulk(newInvoices.toList)
+  
 }

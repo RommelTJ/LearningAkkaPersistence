@@ -2,7 +2,7 @@ package part2eventsourcing
 
 import java.util.Date
 
-import akka.actor.{ActorLogging, ActorSystem, Props}
+import akka.actor.{ActorLogging, ActorSystem, PoisonPill, Props}
 import akka.persistence.PersistentActor
 
 object PersistentActors extends App {
@@ -96,9 +96,9 @@ object PersistentActors extends App {
   val system = ActorSystem("PersistentActors")
   val accountant = system.actorOf(Props[Accountant], "simpleAccountant")
 
-//  for (i <- 1 to 10) {
-//    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
-//  }
+  for (i <- 1 to 10) {
+    accountant ! Invoice("The Sofa Company", new Date, i * 1000)
+  }
 
   /*
      Persistence failures
@@ -117,5 +117,12 @@ object PersistentActors extends App {
      you suddenly have two threads persisting events simultaneously. Since event order is non-deterministic, you risk
      corrupting the actor state.
    */
+
+  /**
+   * Shutdown of persistent actors
+   *
+   * Best practice: Define your own "shutdown" messages.
+   */
+  // accountant ! PoisonPill
 
 }

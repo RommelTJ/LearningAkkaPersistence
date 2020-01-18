@@ -45,7 +45,12 @@ object PersistentActorsExercise extends App {
       poll.put(candidate, votes + 1)
     }
 
-    override def receiveRecover: Receive = ???
+    override def receiveRecover: Receive = {
+      case vote @ Vote(citizenPID, candidate) => {
+        log.info(s"Recovered $vote")
+        handleInternalStateChange(citizenPID, candidate)
+      }
+    }
 
   }
 

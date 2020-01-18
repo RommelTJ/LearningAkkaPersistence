@@ -13,6 +13,7 @@ object PersistentActors extends App {
 
   // Commands
   case class Invoice(recipient: String, date: Date, amount: Int)
+  case class InvoiceBulk(invoices: List[Invoice])
 
   // Events
   case class InvoiceRecorded(id: Int, recipient: String, date: Date, amount: Int)
@@ -86,6 +87,11 @@ object PersistentActors extends App {
 
   /*
      Persistence failures
+   */
+  /**
+   * Persisting multiple events
+   *
+   * persistAll
    */
 
 }

@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 import scala.collection.mutable
@@ -36,7 +36,7 @@ object PersistentActorsExercise extends App {
             handleInternalStateChange(citizenPID, candidate)
           }
         }
-      case "print" => log.info(s"Current state: ")
+      case "print" => log.info(s"Current state: citizens: $citizens, poll: $poll")
     }
 
     def handleInternalStateChange(citizenPID: String, candidate: String): Unit = {
@@ -53,5 +53,22 @@ object PersistentActorsExercise extends App {
     }
 
   }
+
+  val system = ActorSystem("PersistentActorsExercise")
+  val votingStation = system.actorOf(Props[VotingStation], "simpleVotingStation")
+
+  val votesMap = Map[String, String](
+    "Alice" -> "Martin",
+    "Bob" -> "Roland",
+    "Charlie" -> "Martin",
+    "David" -> "Jonas",
+    "Daniel" -> "Martin"
+  )
+
+  votesMap.keys.foreach(citizen => {
+    votingStation ! Vote(citizen, votesMap(citizen))
+  })
+
+  votingStation ! "print"
 
 }

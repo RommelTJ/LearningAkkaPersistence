@@ -15,6 +15,9 @@ object PersistentActors extends App {
   case class Invoice(recipient: String, date: Date, amount: Int)
   case class InvoiceBulk(invoices: List[Invoice])
 
+  // Special Commands
+  case object Shutdown
+
   // Events
   case class InvoiceRecorded(id: Int, recipient: String, date: Date, amount: Int)
 
@@ -63,6 +66,7 @@ object PersistentActors extends App {
           totalAmount += e.amount
           log.info(s"Persisted SINGLE $e as invoice #${e.id}, for total amount: $totalAmount")
         }
+      case Shutdown => context.stop(self)
       // You don't need to persist events. You can act like a normal actor
       case "print" =>
         log.info(s"Latest invoice id: $latestInvoiceId, total amount: $totalAmount")
@@ -124,5 +128,6 @@ object PersistentActors extends App {
    * Best practice: Define your own "shutdown" messages.
    */
   // accountant ! PoisonPill
+  accountant ! Shutdown
 
 }

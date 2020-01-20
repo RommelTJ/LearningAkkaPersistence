@@ -27,7 +27,9 @@ object MultiplePersists extends App {
 
     override def receiveCommand: Receive = ???
 
-    override def receiveRecover: Receive = ???
+    override def receiveRecover: Receive = {
+      case event => log.info(s"Recovered: $event")
+    }
 
   }
   object DiligentAccountant {

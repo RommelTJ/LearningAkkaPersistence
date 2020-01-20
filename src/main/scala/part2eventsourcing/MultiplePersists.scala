@@ -23,7 +23,7 @@ object MultiplePersists extends App {
 
   class DiligentAccountant(taxId: String, taxAuthority: ActorRef) extends PersistentActor with ActorLogging {
 
-    override def persistenceId: String = ???
+    override def persistenceId: String = "diligent-accountant"
 
     override def receiveCommand: Receive = ???
 

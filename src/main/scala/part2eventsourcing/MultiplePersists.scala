@@ -2,7 +2,7 @@ package part2eventsourcing
 
 import java.util.Date
 
-import akka.actor.{ActorLogging, ActorRef, Props}
+import akka.actor.{ActorLogging, ActorRef, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 object MultiplePersists extends App {
@@ -33,5 +33,9 @@ object MultiplePersists extends App {
   object DiligentAccountant {
     def props(taxId: String, taxAuthority: ActorRef) = Props(new DiligentAccountant(taxId, taxAuthority))
   }
+
+  val system = ActorSystem("MultiplePersistsDemo")
+  val taxAuthority = system.actorOf(Props[TaxAuthority], "HMRC")
+  val diligentAccountant = system.actorOf(DiligentAccountant.props("CDWQ0012", taxAuthority), "accountant")
 
 }

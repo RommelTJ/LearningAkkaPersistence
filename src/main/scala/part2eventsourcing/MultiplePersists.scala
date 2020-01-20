@@ -1,5 +1,7 @@
 package part2eventsourcing
 
+import java.util.Date
+
 object MultiplePersists extends App {
 
   /**
@@ -8,5 +10,8 @@ object MultiplePersists extends App {
    * - a tax record for the fiscal authority
    * - an invoice record for personal logs or some auditing authority
    */
+
+  // Command
+  case class Invoice(recipient: String, date: Date, amount: Int)
 
 }

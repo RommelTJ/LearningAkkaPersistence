@@ -14,4 +14,7 @@ object MultiplePersists extends App {
   // Command
   case class Invoice(recipient: String, date: Date, amount: Int)
 
+  // Events
+  case class TaxRecord(taxId: String, recordId: Int, date: Date, totalAmount: Int)
+
 }

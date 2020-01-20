@@ -23,9 +23,22 @@ object MultiplePersists extends App {
 
   class DiligentAccountant(taxId: String, taxAuthority: ActorRef) extends PersistentActor with ActorLogging {
 
+    var latestTaxRecordId = 0
+    var latestInvoiceRecordId = 0
+
     override def persistenceId: String = "diligent-accountant"
 
-    override def receiveCommand: Receive = ???
+    override def receiveCommand: Receive = {
+      case Invoice(recipient, date, amount) =>
+        persist(TaxRecord(taxId, latestTaxRecordId, date, amount / 3)) { record =>
+          taxAuthority ! record
+          latestTaxRecordId += 1
+        }
+        persist(InvoiceRecord(latestInvoiceRecordId, recipient, date, amount)) { invoiceRecord =>
+          taxAuthority ! invoiceRecord
+          latestInvoiceRecordId += 1
+        }
+    }
 
     override def receiveRecover: Receive = {
       case event => log.info(s"Recovered: $event")

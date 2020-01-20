@@ -2,6 +2,9 @@ package part2eventsourcing
 
 import java.util.Date
 
+import akka.actor.{ActorLogging, ActorRef}
+import akka.persistence.PersistentActor
+
 object MultiplePersists extends App {
 
   /**
@@ -17,5 +20,15 @@ object MultiplePersists extends App {
   // Events
   case class TaxRecord(taxId: String, recordId: Int, date: Date, totalAmount: Int)
   case class InvoiceRecord(invoiceRecordId: Int, recipient: String, date: Date, amount: Int)
+
+  class DiligentAccountant(taxId: String, taxAuthority: ActorRef) extends PersistentActor with ActorLogging {
+
+    override def persistenceId: String = ???
+
+    override def receiveCommand: Receive = ???
+
+    override def receiveRecover: Receive = ???
+
+  }
 
 }

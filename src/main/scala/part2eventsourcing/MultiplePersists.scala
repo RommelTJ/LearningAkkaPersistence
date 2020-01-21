@@ -33,10 +33,18 @@ object MultiplePersists extends App {
         persist(TaxRecord(taxId, latestTaxRecordId, date, amount / 3)) { record =>
           taxAuthority ! record
           latestTaxRecordId += 1
+
+          persist("I hereby declare this tax record to be true and complete.") { declaration =>
+            taxAuthority ! declaration
+          }
         }
         persist(InvoiceRecord(latestInvoiceRecordId, recipient, date, amount)) { invoiceRecord =>
           taxAuthority ! invoiceRecord
           latestInvoiceRecordId += 1
+
+          persist("I hereby declare this tax record to be true and complete.") { declaration =>
+            taxAuthority ! declaration
+          }
         }
     }
 

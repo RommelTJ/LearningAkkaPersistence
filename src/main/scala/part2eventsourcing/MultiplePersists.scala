@@ -59,4 +59,6 @@ object MultiplePersists extends App {
   val taxAuthority = system.actorOf(Props[TaxAuthority], "HMRC")
   val diligentAccountant = system.actorOf(DiligentAccountant.props("CDWQ0012", taxAuthority), "accountant")
 
+  diligentAccountant ! Invoice("The Sofa Company", new Date, 2000)
+
 }

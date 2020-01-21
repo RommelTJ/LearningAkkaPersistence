@@ -60,5 +60,10 @@ object MultiplePersists extends App {
   val diligentAccountant = system.actorOf(DiligentAccountant.props("CDWQ0012", taxAuthority), "accountant")
 
   diligentAccountant ! Invoice("The Sofa Company", new Date, 2000)
+  // The message ordering (TaxRecord -> InvoiceRecord) is GUARANTEED.
+  // The TaxRecord callback is always called before the InvoiceRecord callback.
+  /**
+   * PERSISTENCE IS ALSO BASED ON MESSAGE PASSING.
+   */
 
 }

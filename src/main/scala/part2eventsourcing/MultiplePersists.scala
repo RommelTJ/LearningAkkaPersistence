@@ -72,4 +72,8 @@ object MultiplePersists extends App {
    * PERSISTENCE IS ALSO BASED ON MESSAGE PASSING.
    */
 
+  // Nested Persisting
+  // This is guaranteed to run after the first message because it is stashed.
+  diligentAccountant ! Invoice("The Supercar Company", new Date, 200350)
+
 }

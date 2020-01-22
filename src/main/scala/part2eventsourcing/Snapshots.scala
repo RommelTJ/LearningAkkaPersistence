@@ -24,7 +24,28 @@ object Snapshots extends App {
 
     override def persistenceId: String = s"$owner-$contact-chat"
 
-    override def receiveCommand: Receive = ???
+    override def receiveCommand: Receive = {
+      case ReceivedMessage(contents) =>
+        persist(ReceivedMessageRecord(currentMessageId, contents)) { e =>
+          log.info(s"Received message: $contents")
+          if (lastMessages.size >= MAX_MESSAGES) {
+            lastMessages.dequeue()
+          }
+          lastMessages.enqueue((contact, contents))
+
+          currentMessageId += 1
+        }
+      case SentMessage(contents) =>
+        persist(SentMessageRecord(currentMessageId, contents)) { e =>
+          log.info(s"Sent message: $contents")
+          if (lastMessages.size >= MAX_MESSAGES) {
+            lastMessages.dequeue()
+          }
+          lastMessages.enqueue((owner, contents))
+
+          currentMessageId += 1
+        }
+    }
 
     override def receiveRecover: Receive = ???
 

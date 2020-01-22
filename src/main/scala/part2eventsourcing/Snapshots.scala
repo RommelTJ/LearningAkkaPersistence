@@ -28,27 +28,25 @@ object Snapshots extends App {
       case ReceivedMessage(contents) =>
         persist(ReceivedMessageRecord(currentMessageId, contents)) { e =>
           log.info(s"Received message: $contents")
-          if (lastMessages.size >= MAX_MESSAGES) {
-            lastMessages.dequeue()
-          }
-          lastMessages.enqueue((contact, contents))
-
+          maybeReplaceMessage(contact, contents)
           currentMessageId += 1
         }
       case SentMessage(contents) =>
         persist(SentMessageRecord(currentMessageId, contents)) { e =>
           log.info(s"Sent message: $contents")
-          if (lastMessages.size >= MAX_MESSAGES) {
-            lastMessages.dequeue()
-          }
-          lastMessages.enqueue((owner, contents))
-
+          maybeReplaceMessage(owner, contents)
           currentMessageId += 1
         }
     }
 
     override def receiveRecover: Receive = ???
 
+    def maybeReplaceMessage(sender: String, contents: String): Unit = {
+      if (lastMessages.size >= MAX_MESSAGES) {
+        lastMessages.dequeue()
+      }
+      lastMessages.enqueue((sender, contents))
+    }
   }
   object Chat {
     def props(owner: String, contact: String) = Props(new Chat(owner, contact))

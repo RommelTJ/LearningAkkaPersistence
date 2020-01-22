@@ -1,7 +1,7 @@
 package part2eventsourcing
 
 import akka.actor.{ActorLogging, ActorSystem, Props}
-import akka.persistence.PersistentActor
+import akka.persistence.{PersistentActor, SnapshotOffer}
 
 import scala.collection.mutable
 
@@ -51,6 +51,9 @@ object Snapshots extends App {
         log.info(s"Recovered sent message with id: $id and contents: $contents")
         maybeReplaceMessage(owner, contents)
         currentMessageId = id
+      case SnapshotOffer(metadata, contents) =>
+        log.info(s"Recovered snapshot: $metadata")
+        contents.asInstanceOf[mutable.Queue[(String, String)]].foreach(lastMessages.enqueue(_))
     }
 
     def maybeReplaceMessage(sender: String, contents: String): Unit = {

@@ -40,6 +40,8 @@ object Snapshots extends App {
           currentMessageId += 1
           maybeCheckpoint()
         }
+      case "print" =>
+        log.info(s"Most recent messages: $lastMessages")
     }
 
     override def receiveRecover: Receive = {
@@ -80,11 +82,12 @@ object Snapshots extends App {
   val system = ActorSystem("SnapshotsDemo")
   val chat = system.actorOf(Chat.props("rommel123", "daniel456"))
 
-  for (i <- 1 to 100000) {
-    chat ! ReceivedMessage(s"Akka Rocks $i")
-    chat ! SentMessage(s"Akka Rules $i")
-  }
+//  for (i <- 1 to 100000) {
+//    chat ! ReceivedMessage(s"Akka Rocks $i")
+//    chat ! SentMessage(s"Akka Rules $i")
+//  }
 
   // Snapshots!
+  chat ! "print"
 
 }

@@ -5,6 +5,10 @@ import akka.persistence.PersistentActor
 
 object Snapshots extends App {
 
+  // commands
+  case class ReceivedMessage(contents: String) // message FROM your contact
+  case class SentMessage(contents: String) // message TO your contact
+
   class Chat(owner: String, contact: String) extends PersistentActor with ActorLogging {
 
     override def persistenceId: String = s"$owner-$contact-chat"

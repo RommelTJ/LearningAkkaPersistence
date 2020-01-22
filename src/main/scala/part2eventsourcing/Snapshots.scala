@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, Props}
 import akka.persistence.PersistentActor
 
 object Snapshots extends App {
@@ -13,6 +13,9 @@ object Snapshots extends App {
 
     override def receiveRecover: Receive = ???
 
+  }
+  object Chat {
+    def props(owner: String, contact: String) = Props(new Chat(owner, contact))
   }
 
 }

@@ -3,6 +3,8 @@ package part2eventsourcing
 import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
+import scala.collection.mutable
+
 object Snapshots extends App {
 
   // commands
@@ -14,6 +16,11 @@ object Snapshots extends App {
   case class SentMessageRecord(id: Int, contents: String)
 
   class Chat(owner: String, contact: String) extends PersistentActor with ActorLogging {
+
+    val MAX_MESSAGES = 10
+
+    var currentMessageId = 0
+    val lastMessages = new mutable.Queue[(String, String)]()
 
     override def persistenceId: String = s"$owner-$contact-chat"
 

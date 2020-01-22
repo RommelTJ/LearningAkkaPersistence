@@ -39,7 +39,16 @@ object Snapshots extends App {
         }
     }
 
-    override def receiveRecover: Receive = ???
+    override def receiveRecover: Receive = {
+      case ReceivedMessageRecord(id, contents) =>
+        log.info(s"Recovered received message with id: $id and contents: $contents")
+        maybeReplaceMessage(contact, contents)
+        currentMessageId = id
+      case SentMessageRecord(id, contents) =>
+        log.info(s"Recovered sent message with id: $id and contents: $contents")
+        maybeReplaceMessage(owner, contents)
+        currentMessageId = id
+    }
 
     def maybeReplaceMessage(sender: String, contents: String): Unit = {
       if (lastMessages.size >= MAX_MESSAGES) {

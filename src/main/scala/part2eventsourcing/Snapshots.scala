@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.{ActorLogging, Props}
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 object Snapshots extends App {
@@ -17,5 +17,8 @@ object Snapshots extends App {
   object Chat {
     def props(owner: String, contact: String) = Props(new Chat(owner, contact))
   }
+
+  val system = ActorSystem("SnapshotsDemo")
+  val chat = system.actorOf(Chat.props("rommel123", "daniel456"))
 
 }

@@ -21,6 +21,7 @@ object Snapshots extends App {
 
     var currentMessageId = 0
     val lastMessages = new mutable.Queue[(String, String)]()
+    var commandsWithoutCheckpoint = 0
 
     override def persistenceId: String = s"$owner-$contact-chat"
 
@@ -30,12 +31,14 @@ object Snapshots extends App {
           log.info(s"Received message: $contents")
           maybeReplaceMessage(contact, contents)
           currentMessageId += 1
+          maybeCheckpoint()
         }
       case SentMessage(contents) =>
         persist(SentMessageRecord(currentMessageId, contents)) { e =>
           log.info(s"Sent message: $contents")
           maybeReplaceMessage(owner, contents)
           currentMessageId += 1
+          maybeCheckpoint()
         }
     }
 
@@ -56,6 +59,16 @@ object Snapshots extends App {
       }
       lastMessages.enqueue((sender, contents))
     }
+
+    def maybeCheckpoint(): Unit = {
+      commandsWithoutCheckpoint += 1
+      if (commandsWithoutCheckpoint >= MAX_MESSAGES) {
+        log.info(s"Saving checkpoint...")
+        saveSnapshot(lastMessages)
+        commandsWithoutCheckpoint = 0
+      }
+    }
+
   }
   object Chat {
     def props(owner: String, contact: String) = Props(new Chat(owner, contact))
@@ -68,5 +81,7 @@ object Snapshots extends App {
 //    chat ! ReceivedMessage(s"Akka Rocks $i")
 //    chat ! SentMessage(s"Akka Rules $i")
 //  }
+
+  // Snapshots!
 
 }

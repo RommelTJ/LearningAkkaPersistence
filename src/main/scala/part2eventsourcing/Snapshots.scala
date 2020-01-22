@@ -69,7 +69,7 @@ object Snapshots extends App {
       commandsWithoutCheckpoint += 1
       if (commandsWithoutCheckpoint >= MAX_MESSAGES) {
         log.info(s"Saving checkpoint...")
-        saveSnapshot(lastMessages)
+        saveSnapshot(lastMessages) // asynchronous operation
         commandsWithoutCheckpoint = 0
       }
     }
@@ -89,5 +89,18 @@ object Snapshots extends App {
 
   // Snapshots!
   chat ! "print"
+
+  /**
+   * event1
+   * event2
+   * event3
+   * snapshot1
+   * event4
+   * snapshot2
+   * event5
+   * event6
+   *
+   * When messages are recovered, it only recovers messages since the last snapshot!
+   */
 
 }

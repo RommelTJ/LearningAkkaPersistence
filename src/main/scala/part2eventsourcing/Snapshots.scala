@@ -9,6 +9,10 @@ object Snapshots extends App {
   case class ReceivedMessage(contents: String) // message FROM your contact
   case class SentMessage(contents: String) // message TO your contact
 
+  // events
+  case class ReceivedMessageRecord(id: Int, contents: String)
+  case class SentMessageRecord(id: Int, contents: String)
+
   class Chat(owner: String, contact: String) extends PersistentActor with ActorLogging {
 
     override def persistenceId: String = s"$owner-$contact-chat"

@@ -52,6 +52,8 @@ object RecoveryDemo extends App {
 
   /**
    * 3 - Customizing recovery
+   *   - WARNING: Please DO NOT persist more events after a customized _incomplete_ recovery
+   *              You might corrupt messages in the meantime.
    */
 
 }

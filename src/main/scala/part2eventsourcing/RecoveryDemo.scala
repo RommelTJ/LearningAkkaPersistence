@@ -35,5 +35,6 @@ object RecoveryDemo extends App {
   for (i <- 1 to 1000) {
     recoveryActor ! Command(s"command: $i")
   }
+  // ALL COMMANDS SENT DURING RECOVERY ARE STASHED
 
 }

@@ -1,7 +1,7 @@
 package part2eventsourcing
 
 import akka.actor.{ActorLogging, ActorSystem, Props}
-import akka.persistence.{PersistentActor, Recovery, SnapshotSelectionCriteria}
+import akka.persistence.{PersistentActor, Recovery, RecoveryCompleted, SnapshotSelectionCriteria}
 
 object RecoveryDemo extends App {
 
@@ -15,14 +15,15 @@ object RecoveryDemo extends App {
     override def receiveCommand: Receive = {
       case Command(contents) =>
         persist(Event(contents)) { event =>
-          log.info(s"Successfully persisted $event")
+          log.info(s"Successfully persisted $event, recovery is ${if (this.recoveryFinished) "" else "NOT"} finished.")
         }
     }
 
     override def receiveRecover: Receive = {
+      case RecoveryCompleted => log.info("I have finished recovering")
       case Event(contents) =>
-        if (contents.contains("314")) throw new RuntimeException("kaboom")
-        log.info(s"Recovered: $contents")
+        // if (contents.contains("314")) throw new RuntimeException("kaboom")
+        log.info(s"Recovered: $contents, recovery is ${if (this.recoveryFinished) "" else "NOT"} finished.")
     }
 
     override protected def onRecoveryFailure(cause: Throwable, event: Option[Any]): Unit = {
@@ -56,6 +57,11 @@ object RecoveryDemo extends App {
    * 3 - Customizing recovery
    *   - WARNING: Please DO NOT persist more events after a customized _incomplete_ recovery
    *              You might corrupt messages in the meantime.
+   */
+
+  /**
+   * 4 - Recovery Status (or KNOWING when you're done recovering)
+   *   - Getting a signal when you're done recovering
    */
 
 }

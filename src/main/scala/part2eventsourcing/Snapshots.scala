@@ -106,4 +106,13 @@ object Snapshots extends App {
    * When messages are recovered, it only recovers messages since the last snapshot!
    */
 
+  /**
+   * pattern:
+   * - after each persist, maybe save a snapshot (logic is up to you)
+   * - if you save a snapshot, you should handle the SnapshotOffer message in receiveRecover
+   * - (optional, but best practice) you should handle the SaveSnapshotSuccess and SaveSnapshotFailure messages in receiveCommand
+   * - ???
+   * - profit from the extra speed
+   */
+
 }

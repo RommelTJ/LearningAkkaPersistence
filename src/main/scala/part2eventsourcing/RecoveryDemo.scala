@@ -1,7 +1,7 @@
 package part2eventsourcing
 
 import akka.actor.{ActorLogging, ActorSystem, Props}
-import akka.persistence.{PersistentActor, Recovery}
+import akka.persistence.{PersistentActor, Recovery, SnapshotSelectionCriteria}
 
 object RecoveryDemo extends App {
 
@@ -30,7 +30,9 @@ object RecoveryDemo extends App {
       super.onRecoveryFailure(cause, event)
     }
 
-    override def recovery: Recovery = Recovery(toSequenceNr = 100)
+    // override def recovery: Recovery = Recovery(toSequenceNr = 100)
+    // override def recovery: Recovery = Recovery(fromSnapshot = SnapshotSelectionCriteria.Latest)
+    // override def recovery: Recovery = Recovery.none
 
   }
 

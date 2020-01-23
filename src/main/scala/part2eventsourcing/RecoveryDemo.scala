@@ -1,7 +1,7 @@
 package part2eventsourcing
 
 import akka.actor.{ActorLogging, ActorSystem, Props}
-import akka.persistence.PersistentActor
+import akka.persistence.{PersistentActor, Recovery}
 
 object RecoveryDemo extends App {
 
@@ -30,6 +30,8 @@ object RecoveryDemo extends App {
       super.onRecoveryFailure(cause, event)
     }
 
+    override def recovery: Recovery = Recovery(toSequenceNr = 100)
+
   }
 
   val system = ActorSystem("RecoveryDemo")
@@ -46,6 +48,10 @@ object RecoveryDemo extends App {
   /**
    * 2 - Failure during recovery
    *   - onRecoveryFailure + the actor is stopped (if there is a failure, the Actor cannot be trusted anymore)
+   */
+
+  /**
+   * 3 - Customizing recovery
    */
 
 }

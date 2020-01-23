@@ -12,7 +12,12 @@ object RecoveryDemo extends App {
 
     override def persistenceId: String = "recover-actor"
 
-    override def receiveCommand: Receive = ???
+    override def receiveCommand: Receive = {
+      case Command(contents) =>
+        persist(Event(contents)) { event =>
+          log.info(s"Successfully persisted $event")
+        }
+    }
 
     override def receiveRecover: Receive = ???
 

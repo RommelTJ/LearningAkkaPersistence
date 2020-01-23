@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 object RecoveryDemo extends App {
@@ -25,5 +25,8 @@ object RecoveryDemo extends App {
     }
 
   }
+
+  val system = ActorSystem("RecoveryDemo")
+  val recoveryActor = system.actorOf(Props[RecoveryActor], "recoveryActor")
 
 }

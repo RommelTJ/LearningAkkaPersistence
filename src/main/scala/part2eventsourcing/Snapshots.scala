@@ -1,7 +1,7 @@
 package part2eventsourcing
 
 import akka.actor.{ActorLogging, ActorSystem, Props}
-import akka.persistence.{PersistentActor, SnapshotOffer}
+import akka.persistence.{PersistentActor, SaveSnapshotFailure, SaveSnapshotSuccess, SnapshotOffer}
 
 import scala.collection.mutable
 
@@ -42,6 +42,9 @@ object Snapshots extends App {
         }
       case "print" =>
         log.info(s"Most recent messages: $lastMessages")
+      // snapshot-related messages
+      case SaveSnapshotSuccess(metadata) => log.info(s"Saving snapshot succeeded: $metadata")
+      case SaveSnapshotFailure(metadata, reason) => log.info(s"Saving snapshot $metadata failed because of $reason")
     }
 
     override def receiveRecover: Receive = {

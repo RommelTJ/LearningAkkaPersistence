@@ -19,7 +19,10 @@ object RecoveryDemo extends App {
         }
     }
 
-    override def receiveRecover: Receive = ???
+    override def receiveRecover: Receive = {
+      case Event(contents) =>
+        log.info(s"Recovered: $contents")
+    }
 
   }
 

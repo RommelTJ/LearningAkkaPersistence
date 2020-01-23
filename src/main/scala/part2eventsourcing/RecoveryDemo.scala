@@ -45,6 +45,7 @@ object RecoveryDemo extends App {
 
   /**
    * 2 - Failure during recovery
+   *   - onRecoveryFailure + the actor is stopped (if there is a failure, the Actor cannot be trusted anymore)
    */
 
 }

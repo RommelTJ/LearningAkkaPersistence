@@ -29,4 +29,11 @@ object RecoveryDemo extends App {
   val system = ActorSystem("RecoveryDemo")
   val recoveryActor = system.actorOf(Props[RecoveryActor], "recoveryActor")
 
+  /**
+   * Stashing commands
+   */
+  for (i <- 1 to 1000) {
+    recoveryActor ! Command(s"command: $i")
+  }
+
 }

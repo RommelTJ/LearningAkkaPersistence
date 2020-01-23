@@ -21,7 +21,13 @@ object RecoveryDemo extends App {
 
     override def receiveRecover: Receive = {
       case Event(contents) =>
+        if (contents.contains("314")) throw new RuntimeException("kaboom")
         log.info(s"Recovered: $contents")
+    }
+
+    override protected def onRecoveryFailure(cause: Throwable, event: Option[Any]): Unit = {
+      log.error(s"I failed at recovery")
+      super.onRecoveryFailure(cause, event)
     }
 
   }
@@ -32,9 +38,13 @@ object RecoveryDemo extends App {
   /**
    * Stashing commands
    */
-  for (i <- 1 to 1000) {
-    recoveryActor ! Command(s"command: $i")
-  }
+//  for (i <- 1 to 1000) {
+//    recoveryActor ! Command(s"command: $i")
+//  }
   // ALL COMMANDS SENT DURING RECOVERY ARE STASHED
+
+  /**
+   * 2 - Failure during recovery
+   */
 
 }

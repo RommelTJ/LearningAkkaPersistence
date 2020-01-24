@@ -46,9 +46,9 @@ object RecoveryDemo extends App {
   /**
    * Stashing commands
    */
-  for (i <- 1 to 1000) {
-    recoveryActor ! Command(s"command: $i")
-  }
+//  for (i <- 1 to 1000) {
+//    recoveryActor ! Command(s"command: $i")
+//  }
   // ALL COMMANDS SENT DURING RECOVERY ARE STASHED
 
   /**

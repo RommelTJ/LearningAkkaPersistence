@@ -6,22 +6,25 @@ import akka.persistence.{PersistentActor, Recovery, RecoveryCompleted, SnapshotS
 object RecoveryDemo extends App {
 
   case class Command(contents: String)
-  case class Event(contents: String)
+  case class Event(id: Int, contents: String)
 
   class RecoveryActor extends PersistentActor with ActorLogging {
 
     override def persistenceId: String = "recover-actor"
 
-    override def receiveCommand: Receive = {
+    override def receiveCommand: Receive = online(0)
+
+    def online(latestPersistedEventId: Int): Receive = {
       case Command(contents) =>
-        persist(Event(contents)) { event =>
+        persist(Event(latestPersistedEventId, contents)) { event =>
           log.info(s"Successfully persisted $event, recovery is ${if (this.recoveryFinished) "" else "NOT"} finished.")
+          context.become(online(latestPersistedEventId + 1))
         }
     }
 
     override def receiveRecover: Receive = {
       case RecoveryCompleted => log.info("I have finished recovering")
-      case Event(contents) =>
+      case Event(_, contents) =>
         // if (contents.contains("314")) throw new RuntimeException("kaboom")
         log.info(s"Recovered: $contents, recovery is ${if (this.recoveryFinished) "" else "NOT"} finished.")
     }
@@ -62,6 +65,10 @@ object RecoveryDemo extends App {
   /**
    * 4 - Recovery Status (or KNOWING when you're done recovering)
    *   - Getting a signal when you're done recovering
+   */
+
+  /**
+   * 5 - Stateless Actors
    */
 
 }

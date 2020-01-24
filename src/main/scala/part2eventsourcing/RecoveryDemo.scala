@@ -24,9 +24,11 @@ object RecoveryDemo extends App {
 
     override def receiveRecover: Receive = {
       case RecoveryCompleted => log.info("I have finished recovering")
-      case Event(_, contents) =>
+      case Event(id, contents) =>
         // if (contents.contains("314")) throw new RuntimeException("kaboom")
         log.info(s"Recovered: $contents, recovery is ${if (this.recoveryFinished) "" else "NOT"} finished.")
+        context.become(online(id)) // This will NOT change the event handler during recovery
+        // AFTER recovery, the normal handler will be the result of all the stacking of context becomes.
     }
 
     override protected def onRecoveryFailure(cause: Throwable, event: Option[Any]): Unit = {

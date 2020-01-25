@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.ActorLogging
+import akka.actor.{Actor, ActorLogging}
 import akka.persistence.PersistentActor
 
 object PersistAsyncDemo extends App {
@@ -18,6 +18,12 @@ object PersistAsyncDemo extends App {
       case message => log.info(s"Recovered: $message")
     }
 
+  }
+
+  class EventAggregator extends Actor with ActorLogging {
+    override def receive: Receive = {
+      case message => log.info(s"Aggregating $message")
+    }
   }
 
 }

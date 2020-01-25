@@ -37,12 +37,15 @@ object PersistAsyncDemo extends App {
 
   class EventAggregator extends Actor with ActorLogging {
     override def receive: Receive = {
-      case message => log.info(s"Aggregating $message")
+      case message => log.info(s"$message")
     }
   }
 
   val actorSystem = ActorSystem("PersistAsyncDemo")
   val eventAggregator = actorSystem.actorOf(Props[EventAggregator], "eventAggregator")
   val streamProcessor = actorSystem.actorOf(CriticalStreamProcessor.props(eventAggregator), "streamProcessor")
+
+  streamProcessor ! Command("command1")
+  streamProcessor ! Command("command2")
 
 }

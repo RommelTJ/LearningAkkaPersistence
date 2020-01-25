@@ -15,13 +15,13 @@ object PersistAsyncDemo extends App {
     override def receiveCommand: Receive = {
       case Command(contents) =>
         eventAggregator ! s"Processing $contents"
-        persistAsync(Event(contents)) { e =>
+        persistAsync(Event(contents)) /*      TIME GAP      */ { e =>
           eventAggregator ! e
         }
 
         // some actual computation
         val processedContents = contents + "_processed"
-        persistAsync(Event(processedContents)) { e =>
+        persistAsync(Event(processedContents)) /*      TIME GAP      */ { e =>
           eventAggregator ! e
         }
     }
@@ -47,5 +47,7 @@ object PersistAsyncDemo extends App {
 
   streamProcessor ! Command("command1")
   streamProcessor ! Command("command2")
+  // When using persistAsync, you can also receive normal commands in between time gaps. Relaxes the persistence
+  // guarantees. However, both persist and persistAsync are asynchronous.
 
 }

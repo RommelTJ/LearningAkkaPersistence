@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.persistence.PersistentActor
 
 object PersistAsyncDemo extends App {
@@ -40,5 +40,9 @@ object PersistAsyncDemo extends App {
       case message => log.info(s"Aggregating $message")
     }
   }
+
+  val actorSystem = ActorSystem("PersistAsyncDemo")
+  val eventAggregator = actorSystem.actorOf(Props[EventAggregator], "eventAggregator")
+  val streamProcessor = actorSystem.actorOf(CriticalStreamProcessor.props(eventAggregator), "streamProcessor")
 
 }

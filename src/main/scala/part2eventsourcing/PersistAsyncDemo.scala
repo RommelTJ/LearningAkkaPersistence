@@ -15,13 +15,13 @@ object PersistAsyncDemo extends App {
     override def receiveCommand: Receive = {
       case Command(contents) =>
         eventAggregator ! s"Processing $contents"
-        persist(Event(contents)) { e =>
+        persistAsync(Event(contents)) { e =>
           eventAggregator ! e
         }
 
         // some actual computation
         val processedContents = contents + "_processed"
-        persist(Event(processedContents)) { e =>
+        persistAsync(Event(processedContents)) { e =>
           eventAggregator ! e
         }
     }

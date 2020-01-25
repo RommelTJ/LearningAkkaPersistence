@@ -12,7 +12,19 @@ object PersistAsyncDemo extends App {
 
     override def persistenceId: String = "critical-stream-processor"
 
-    override def receiveCommand: Receive = ???
+    override def receiveCommand: Receive = {
+      case Command(contents) =>
+        eventAggregator ! s"Processing $contents"
+        persist(Event(contents)) { e =>
+          eventAggregator ! e
+        }
+
+        // some actual computation
+        val processedContents = contents + "_processed"
+        persist(Event(processedContents)) { e =>
+          eventAggregator ! e
+        }
+    }
 
     override def receiveRecover: Receive = {
       case message => log.info(s"Recovered: $message")

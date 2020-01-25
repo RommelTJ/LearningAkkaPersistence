@@ -1,6 +1,6 @@
 package part2eventsourcing
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.persistence.PersistentActor
 
 object PersistAsyncDemo extends App {
@@ -8,7 +8,7 @@ object PersistAsyncDemo extends App {
   case class Command(contents: String)
   case class Event(contents: String)
 
-  class CriticalStreamProcessor extends PersistentActor with ActorLogging {
+  class CriticalStreamProcessor(eventAggregator: ActorRef) extends PersistentActor with ActorLogging {
 
     override def persistenceId: String = "critical-stream-processor"
 
@@ -18,6 +18,9 @@ object PersistAsyncDemo extends App {
       case message => log.info(s"Recovered: $message")
     }
 
+  }
+  object CriticalStreamProcessor {
+    def props(eventAggregator: ActorRef) = Props(new CriticalStreamProcessor(eventAggregator))
   }
 
   class EventAggregator extends Actor with ActorLogging {

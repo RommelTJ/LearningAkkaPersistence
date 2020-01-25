@@ -50,4 +50,11 @@ object PersistAsyncDemo extends App {
   // When using persistAsync, you can also receive normal commands in between time gaps. Relaxes the persistence
   // guarantees. However, both persist and persistAsync are asynchronous.
 
+  /**
+   * When should you use persist vs persistAsync?
+   * - persistAsync has a performance benefit over persist. Useful in high-throughput environments.
+   * - persistAsync is bad when you absolutely need the ordering of the events (e.g. your state depends on it).
+   * - Thus, the main reason to choose one over the other is ordering guarantees.
+   */
+
 }

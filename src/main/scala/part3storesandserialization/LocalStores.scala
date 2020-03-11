@@ -1,7 +1,8 @@
 package part3storesandserialization
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem}
 import akka.persistence.{PersistentActor, RecoveryCompleted, SaveSnapshotFailure, SaveSnapshotSuccess, SnapshotOffer}
+import com.typesafe.config.ConfigFactory
 
 object LocalStores extends App {
 
@@ -33,5 +34,7 @@ object LocalStores extends App {
     }
 
   }
+
+  val localStoresActorSystem = ActorSystem("localStoresSystem", ConfigFactory.load().getConfig("localStores"))
 
 }

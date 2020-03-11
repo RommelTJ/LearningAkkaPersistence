@@ -15,7 +15,7 @@ object LocalStores extends App {
     override def receiveCommand: Receive = {
       case "print" => log.info(s"I have persisted $nMessages so far")
       case "snap" => saveSnapshot(nMessages)
-      case SaveSnapshotSuccess => log.info(s"Save Snapshot was successful")
+      case SaveSnapshotSuccess(metadata) => log.info(s"Save Snapshot was successful: $metadata")
       case SaveSnapshotFailure(_, cause) => log.warning(s"Save Snapshot failed: $cause")
       case message => persist(message) { _ =>
         log.info(s"Persisting $message")

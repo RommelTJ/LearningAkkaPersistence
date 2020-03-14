@@ -45,4 +45,11 @@ class UserRegistrationActor extends PersistentActor with ActorLogging {
 
 object CustomSerialization extends App {
 
+  /**
+   * Send Command to the Actor
+   * - Actor calls persist
+   * - Serializer serializes the event into bytes
+   * - The journal writes the bytes
+   */
+
 }

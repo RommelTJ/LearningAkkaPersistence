@@ -18,6 +18,8 @@ class UserRegistrationSerializer extends Serializer {
     case event @ UserRegistered(id, email, name) =>
       println(s"Serializing $event")
       s"[$id//$email//$name]".getBytes
+    case _ =>
+      throw new IllegalArgumentException("Only user registration events supported in this serializer")
   }
 
   // manifest will be None since includeManifest is hardcoded to false

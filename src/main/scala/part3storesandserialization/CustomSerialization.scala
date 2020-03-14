@@ -76,8 +76,8 @@ object CustomSerialization extends App {
   val system = ActorSystem("CustomSerialization", ConfigFactory.load().getConfig("customSerializerDemo"))
   val userRegistrationActor = system.actorOf(Props[UserRegistrationActor], "userRegistration")
 
-  for (i <- 1 to 10) {
-    userRegistrationActor ! RegisterUser(s"user_$i@rtjvm.com", s"User $i")
-  }
+//  for (i <- 1 to 10) {
+//    userRegistrationActor ! RegisterUser(s"user_$i@rtjvm.com", s"User $i")
+//  }
 
 }

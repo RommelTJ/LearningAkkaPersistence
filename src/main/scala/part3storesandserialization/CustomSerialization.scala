@@ -1,8 +1,9 @@
 package part3storesandserialization
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import akka.serialization.Serializer
+import com.typesafe.config.ConfigFactory
 
 // command
 case class RegisterUser(email: String, name: String)
@@ -69,5 +70,12 @@ object CustomSerialization extends App {
    * - Serializer serializes the event into bytes
    * - The journal writes the bytes
    */
+
+  val system = ActorSystem("CustomSerialization", ConfigFactory.load().getConfig("customSerializerDemo"))
+  val userRegistrationActor = system.actorOf(Props[UserRegistrationActor], "userRegistration")
+
+  for (i <- 1 to 10) {
+    userRegistrationActor ! RegisterUser(s"user_$i@rtjvm.com", s"User $i")
+  }
 
 }

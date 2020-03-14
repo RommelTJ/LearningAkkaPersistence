@@ -14,7 +14,11 @@ case class UserRegistered(id: Int, email: String, name: String)
 class UserRegistrationSerializer extends Serializer {
   override def identifier: Int = 43272
 
-  override def toBinary(o: AnyRef): Array[Byte] = ???
+  override def toBinary(o: AnyRef): Array[Byte] = {
+    case event @ UserRegistered(id, email, name) =>
+      println(s"Serializing $event")
+      s"[$id//$email//$name]".getBytes
+  }
 
   // manifest will be None since includeManifest is hardcoded to false
   override def fromBinary(bytes: Array[Byte], manifest: Option[Class[_]]): AnyRef = ???

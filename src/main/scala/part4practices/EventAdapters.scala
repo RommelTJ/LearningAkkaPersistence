@@ -10,5 +10,6 @@ object EventAdapters extends App {
   // Command
   case class AddGuitar(guitar: Guitar, quantity: Int)
 
-  
+  // Event
+  case class GuitarAdded(guitarId: String, guitarModel: String, guitarMake: String, quantity: Int)
 }

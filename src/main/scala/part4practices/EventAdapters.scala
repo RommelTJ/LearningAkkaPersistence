@@ -1,7 +1,8 @@
 package part4practices
 
-import akka.actor.ActorLogging
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
+import com.typesafe.config.ConfigFactory
 
 import scala.collection.mutable
 
@@ -45,4 +46,13 @@ object EventAdapters extends App {
       inventory.put(guitar, existingQuantity + quantity)
     }
   }
+
+  val system = ActorSystem("eventAdapters", ConfigFactory.load().getConfig("eventAdapters"))
+  val inventoryManager = system.actorOf(Props[InventoryManager], "inventoryManager")
+
+  val guitars = for (i <- 1 to 10) yield Guitar(s"$i", s"Hakker$i", "RTJVM")
+  guitars.foreach(g => {
+    inventoryManager ! AddGuitar(g, 5)
+  })
+
 }

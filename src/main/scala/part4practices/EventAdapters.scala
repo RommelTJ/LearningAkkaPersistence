@@ -64,6 +64,9 @@ object EventAdapters extends App {
       }
     }
   }
+  // WriteEventAdapter
+  // actor -> write event adapter -> serializer -> journal
+  // EventAdapter (contains toJournal)
 
   val system = ActorSystem("eventAdapters", ConfigFactory.load().getConfig("eventAdapters"))
   val inventoryManager = system.actorOf(Props[InventoryManager], "inventoryManager")

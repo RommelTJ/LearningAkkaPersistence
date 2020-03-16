@@ -19,7 +19,8 @@ object EventAdapters extends App {
   case class AddGuitar(guitar: Guitar, quantity: Int)
 
   // Event
-  case class GuitarAdded(guitarId: String, guitarModel: String, guitarMake: String, quantity: Int, guitarType: String)
+  case class GuitarAdded(guitarId: String, guitarModel: String, guitarMake: String, quantity: Int)
+  case class GuitarAddedV2(guitarId: String, guitarModel: String, guitarMake: String, quantity: Int, guitarType: String)
 
   class InventoryManager extends PersistentActor with ActorLogging {
     val inventory: mutable.Map[Guitar, Int] = new mutable.HashMap[Guitar, Int]()
@@ -28,7 +29,7 @@ object EventAdapters extends App {
 
     override def receiveCommand: Receive = {
       case AddGuitar(guitar @ Guitar(id, model, make, guitarType), quantity) =>
-        persist(GuitarAdded(id, model, make, quantity, guitarType)) { _ =>
+        persist(GuitarAddedV2(id, model, make, quantity, guitarType)) { _ =>
           addGuitarInventory(guitar, quantity)
           log.info(s"Added $quantity x $guitar to inventory")
         }
@@ -37,7 +38,11 @@ object EventAdapters extends App {
     }
 
     override def receiveRecover: Receive = {
-      case event @ GuitarAdded(id, model, make, quantity, guitarType) =>
+      case event @ GuitarAdded(id, model, make, quantity) =>
+        log.info(s"Recovered $event")
+        val guitar = Guitar(id, model, make, ACOUSTIC)
+        addGuitarInventory(guitar, quantity)
+      case event @ GuitarAddedV2(id, model, make, quantity, guitarType) =>
         log.info(s"Recovered $event")
         val guitar = Guitar(id, model, make, guitarType)
         addGuitarInventory(guitar, quantity)

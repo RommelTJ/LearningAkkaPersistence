@@ -10,8 +10,9 @@ object DetachingModels extends App {
 
   // Command
   case class ApplyCoupon(coupon: Coupon, user: User)
-  
+
   // Event
+  case class CouponApplied(code: String, user: User)
 
   class CouponManager extends PersistentActor with ActorLogging {
 

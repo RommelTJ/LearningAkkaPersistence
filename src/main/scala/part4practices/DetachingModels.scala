@@ -7,16 +7,9 @@ import scala.collection.mutable
 
 object DetachingModels extends App {
 
-  case class User(id: String, email: String)
-  case class Coupon(code: String, promotionAmount: Int)
-
-  // Command
-  case class ApplyCoupon(coupon: Coupon, user: User)
-
-  // Event
-  case class CouponApplied(code: String, user: User)
-
   class CouponManager extends PersistentActor with ActorLogging {
+    import DomainModel._
+    
     val coupons: mutable.Map[String, User] = new mutable.HashMap[String, User]()
 
     override def persistenceId: String = "coupon-manager"
@@ -39,4 +32,15 @@ object DetachingModels extends App {
 
   }
 
+}
+
+object DomainModel {
+  case class User(id: String, email: String)
+  case class Coupon(code: String, promotionAmount: Int)
+
+  // Command
+  case class ApplyCoupon(coupon: Coupon, user: User)
+
+  // Event
+  case class CouponApplied(code: String, user: User)
 }

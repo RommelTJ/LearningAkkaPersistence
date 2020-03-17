@@ -2,6 +2,8 @@ package part4practices
 
 import akka.actor.ActorLogging
 import akka.persistence.PersistentActor
+import akka.persistence.journal.{EventAdapter, EventSeq}
+import part4practices.DomainModel.CouponApplied
 
 import scala.collection.mutable
 
@@ -47,4 +49,32 @@ object DomainModel {
 
 object DataModel {
   case class WrittenCouponApplied(code: String, userId: String, userEmail: String)
+}
+
+class ModelAdapter extends EventAdapter {
+  import DomainModel._
+  import DataModel._
+
+  override def manifest(event: Any): String = "CMA"
+
+  // journal -> serializer -> fromJournal -> actor
+  override def fromJournal(event: Any, manifest: String): EventSeq = {
+    event match {
+      case event @ WrittenCouponApplied(code, userId, userEmail) =>
+        println(s"Converting $event to domain model")
+        EventSeq.single(CouponApplied(code, User(userId, userEmail)))
+      case other =>
+        EventSeq.single(other)
+    }
+  }
+
+  // actor -> toJournal -> serializer -> journal
+  override def toJournal(event: Any): Any = {
+    event match {
+      case event @ CouponApplied(code, user) =>
+        println(s"Converting $event to data model")
+        WrittenCouponApplied(code, user.id, user.email)
+    }
+  }
+
 }

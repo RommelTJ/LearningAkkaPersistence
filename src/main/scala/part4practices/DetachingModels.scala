@@ -9,7 +9,7 @@ object DetachingModels extends App {
 
   class CouponManager extends PersistentActor with ActorLogging {
     import DomainModel._
-    
+
     val coupons: mutable.Map[String, User] = new mutable.HashMap[String, User]()
 
     override def persistenceId: String = "coupon-manager"
@@ -43,4 +43,8 @@ object DomainModel {
 
   // Event
   case class CouponApplied(code: String, user: User)
+}
+
+object DataModel {
+  case class WrittenCouponApplied(code: String, userId: String, userEmail: String)
 }

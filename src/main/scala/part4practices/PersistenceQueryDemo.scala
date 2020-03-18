@@ -35,14 +35,15 @@ object PersistenceQueryDemo extends App {
 
   val simpleActor = system.actorOf(Props[SimplePersistentActor], "simplePersistentActor")
 
-//  import system.dispatcher
-//  system.scheduler.scheduleOnce(5 seconds) {
-//    val message = "Hello World"
-//    simpleActor ! message
-//  }
+  import system.dispatcher
+  system.scheduler.scheduleOnce(5 seconds) {
+    val message = "Hello a second time"
+    simpleActor ! message
+  }
 
   // Events by Persistence Id
   val events = readJournal.eventsByPersistenceId("persistence-query-id-1", 0, Long.MaxValue)
+  // readJournal.currentEventsByPersistenceId() // Finite version
   events.runForeach(e => println(s"Read event: $e"))
 
 }

@@ -12,4 +12,7 @@ object PersistenceQueryDemo extends App {
   // Read Journal
   val readJournal = PersistenceQuery(system).readJournalFor[CassandraReadJournal](CassandraReadJournal.Identifier)
 
+  // Persistence Ids query
+  val persistenceIds = readJournal.persistenceIds()
+
 }

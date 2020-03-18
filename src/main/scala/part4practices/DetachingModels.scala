@@ -49,7 +49,7 @@ object DetachingModels extends App {
 }
 
 object DomainModel {
-  case class User(id: String, email: String)
+  case class User(id: String, email: String, name: String)
   case class Coupon(code: String, promotionAmount: Int)
 
   // Command

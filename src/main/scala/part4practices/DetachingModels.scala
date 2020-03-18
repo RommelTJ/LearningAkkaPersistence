@@ -76,6 +76,9 @@ class ModelAdapter extends EventAdapter {
       case event @ WrittenCouponApplied(code, userId, userEmail) =>
         println(s"Converting $event to domain model")
         EventSeq.single(CouponApplied(code, User(userId, userEmail, "")))
+      case event @ WrittenCouponAppliedV2(code, userId, userEmail, username) =>
+        println(s"Converting $event to domain model")
+        EventSeq.single(CouponApplied(code, User(userId, userEmail, username)))
       case other =>
         EventSeq.single(other)
     }

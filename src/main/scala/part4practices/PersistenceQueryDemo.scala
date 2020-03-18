@@ -4,7 +4,7 @@ import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import akka.persistence.cassandra.query.scaladsl.CassandraReadJournal
 import akka.persistence.journal.{Tagged, WriteEventAdapter}
-import akka.persistence.query.PersistenceQuery
+import akka.persistence.query.{Offset, PersistenceQuery}
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 
@@ -97,6 +97,9 @@ object PersistenceQueryDemo extends App {
     }
     checkoutActor ! Playlist(songs.toList)
   }
+
+  val rockPlaylist = readJournal.eventsByTag("rock", Offset.noOffset)
+  rockPlaylist.runForeach(e => println(s"Found a playlist with a rock song: $e"))
 
 }
 

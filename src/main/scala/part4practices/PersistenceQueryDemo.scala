@@ -17,7 +17,8 @@ object PersistenceQueryDemo extends App {
 
   // Persistence Ids query
   implicit val materializer: ActorMaterializer = ActorMaterializer()(system)
-  val persistenceIds = readJournal.persistenceIds()
+  val persistenceIds = readJournal.persistenceIds() // Infinite stream
+  // readJournal.currentPersistenceIds() // Finite stream
   persistenceIds.runForeach(persistenceId => println(s"Found persistence Id: $persistenceId"))
 
   class SimplePersistentActor extends PersistentActor with ActorLogging {
@@ -39,6 +40,6 @@ object PersistenceQueryDemo extends App {
     val message = "Hello World"
     simpleActor ! message
   }
- 
+
 }
 

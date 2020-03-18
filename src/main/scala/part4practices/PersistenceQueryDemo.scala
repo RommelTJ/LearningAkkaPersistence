@@ -3,9 +3,11 @@ package part4practices
 import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import akka.persistence.cassandra.query.scaladsl.CassandraReadJournal
+import akka.persistence.journal.{Tagged, WriteEventAdapter}
 import akka.persistence.query.PersistenceQuery
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
+
 import scala.concurrent.duration._
 
 object PersistenceQueryDemo extends App {
@@ -68,6 +70,18 @@ object PersistenceQueryDemo extends App {
       case event @ PlaylistPurchased(id, _) =>
         log.info(s"Recovered: $event")
         latestPlaylistId = id
+    }
+  }
+
+  class MusicStoreEventAdapter extends WriteEventAdapter {
+    override def manifest(event: Any): String = "musicStore"
+
+    override def toJournal(event: Any): Any = {
+      event match {
+        case event @ PlaylistPurchased(_, songs) =>
+          val genres = songs.map(_.genre).toSet
+          Tagged(event, genres)
+      }
     }
   }
 

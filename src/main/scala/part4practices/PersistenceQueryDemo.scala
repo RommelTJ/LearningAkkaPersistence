@@ -1,11 +1,12 @@
 package part4practices
 
-import akka.actor.{ActorLogging, ActorSystem}
+import akka.actor.{ActorLogging, ActorSystem, Props}
 import akka.persistence.PersistentActor
 import akka.persistence.cassandra.query.scaladsl.CassandraReadJournal
 import akka.persistence.query.PersistenceQuery
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
+import scala.concurrent.duration._
 
 object PersistenceQueryDemo extends App {
 
@@ -31,4 +32,13 @@ object PersistenceQueryDemo extends App {
     }
   }
 
+  val simpleActor = system.actorOf(Props[SimplePersistentActor], "simplePersistentActor")
+
+  import system.dispatcher
+  system.scheduler.scheduleOnce(5 seconds) {
+    val message = "Hello World"
+    simpleActor ! message
+  }
+ 
 }
+

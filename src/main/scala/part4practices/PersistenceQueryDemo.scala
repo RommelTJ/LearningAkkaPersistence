@@ -41,5 +41,9 @@ object PersistenceQueryDemo extends App {
 //    simpleActor ! message
 //  }
 
+  // Events by Persistence Id
+  val events = readJournal.eventsByPersistenceId("persistence-query-id-1", 0, Long.MaxValue)
+  events.runForeach(e => println(s"Read event: $e"))
+
 }
 

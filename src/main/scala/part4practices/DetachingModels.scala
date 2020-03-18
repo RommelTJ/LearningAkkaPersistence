@@ -61,6 +61,7 @@ object DomainModel {
 
 object DataModel {
   case class WrittenCouponApplied(code: String, userId: String, userEmail: String)
+  case class WrittenCouponAppliedV2(code: String, userId: String, userEmail: String, username: String)
 }
 
 class ModelAdapter extends EventAdapter {
@@ -85,7 +86,7 @@ class ModelAdapter extends EventAdapter {
     event match {
       case event @ CouponApplied(code, user) =>
         println(s"Converting $event to data model")
-        WrittenCouponApplied(code, user.id, user.email)
+        WrittenCouponAppliedV2(code, user.id, user.email, user.name)
     }
   }
 

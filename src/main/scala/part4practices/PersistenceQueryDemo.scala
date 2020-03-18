@@ -19,7 +19,7 @@ object PersistenceQueryDemo extends App {
   implicit val materializer: ActorMaterializer = ActorMaterializer()(system)
   val persistenceIds = readJournal.persistenceIds() // Infinite stream
   // readJournal.currentPersistenceIds() // Finite stream
-  persistenceIds.runForeach(persistenceId => println(s"Found persistence Id: $persistenceId"))
+//  persistenceIds.runForeach(persistenceId => println(s"Found persistence Id: $persistenceId"))
 
   class SimplePersistentActor extends PersistentActor with ActorLogging {
     override def persistenceId: String = "persistence-query-id-1"
@@ -35,11 +35,11 @@ object PersistenceQueryDemo extends App {
 
   val simpleActor = system.actorOf(Props[SimplePersistentActor], "simplePersistentActor")
 
-  import system.dispatcher
-  system.scheduler.scheduleOnce(5 seconds) {
-    val message = "Hello World"
-    simpleActor ! message
-  }
+//  import system.dispatcher
+//  system.scheduler.scheduleOnce(5 seconds) {
+//    val message = "Hello World"
+//    simpleActor ! message
+//  }
 
 }
 

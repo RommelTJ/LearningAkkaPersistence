@@ -39,12 +39,12 @@ object DetachingModels extends App {
   val couponManager = system.actorOf(Props[CouponManager], "couponManager")
 
   import DomainModel._
-  for (i <- 10 to 15) {
-    val coupon = Coupon(s"MEGA COUPON_$i", 100)
-    val user = User(s"$i", s"user_$i@rjtvm.com", s"user_$i")
-
-    couponManager ! ApplyCoupon(coupon, user)
-  }
+//  for (i <- 10 to 15) {
+//    val coupon = Coupon(s"MEGA COUPON_$i", 100)
+//    val user = User(s"$i", s"user_$i@rjtvm.com", s"user_$i")
+//
+//    couponManager ! ApplyCoupon(coupon, user)
+//  }
 
 }
 

@@ -9,6 +9,7 @@ import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration._
+import scala.util.Random
 
 object PersistenceQueryDemo extends App {
 
@@ -81,8 +82,20 @@ object PersistenceQueryDemo extends App {
         case event @ PlaylistPurchased(_, songs) =>
           val genres = songs.map(_.genre).toSet
           Tagged(event, genres)
+        case x => x
       }
     }
+  }
+
+  val checkoutActor = system.actorOf(Props[MusicStoreCheckoutActor], "musicStoreCheckoutActor")
+  val r = new Random()
+  for (_ <- 1 to 10) {
+    val maxSongs = r.nextInt(5)
+    val songs = for (i <- 1 to maxSongs) yield {
+      val randomGenre = genres(r.nextInt(5))
+      Song(s"Artist$i", s"My Song $i", randomGenre)
+    }
+    checkoutActor ! Playlist(songs.toList)
   }
 
 }

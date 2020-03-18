@@ -1,6 +1,7 @@
 package part4practices
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorLogging, ActorSystem}
+import akka.persistence.PersistentActor
 import akka.persistence.cassandra.query.scaladsl.CassandraReadJournal
 import akka.persistence.query.PersistenceQuery
 import akka.stream.ActorMaterializer
@@ -17,5 +18,17 @@ object PersistenceQueryDemo extends App {
   implicit val materializer: ActorMaterializer = ActorMaterializer()(system)
   val persistenceIds = readJournal.persistenceIds()
   persistenceIds.runForeach(persistenceId => println(s"Found persistence Id: $persistenceId"))
+
+  class SimplePersistentActor extends PersistentActor with ActorLogging {
+    override def persistenceId: String = "persistence-query-id-1"
+
+    override def receiveCommand: Receive = {
+      case m => persist(m) { _ => log.info(s"Persisted $m")}
+    }
+
+    override def receiveRecover: Receive = {
+      case e => log.info(s"Recovered $e")
+    }
+  }
 
 }

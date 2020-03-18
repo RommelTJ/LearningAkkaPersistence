@@ -1,7 +1,7 @@
 package part4practices
 
 import akka.actor.ActorSystem
-import akka.persistence.cassandra.query.javadsl.CassandraReadJournal
+import akka.persistence.cassandra.query.scaladsl.CassandraReadJournal
 import akka.persistence.query.PersistenceQuery
 import com.typesafe.config.ConfigFactory
 

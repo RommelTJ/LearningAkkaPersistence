@@ -46,5 +46,30 @@ object PersistenceQueryDemo extends App {
   // readJournal.currentEventsByPersistenceId() // Finite version
   events.runForeach(e => println(s"Read event: $e"))
 
+  // events by tags
+  val genres = Array("pop", "rock", "hip-hop", "jazz", "disco")
+  case class Song(artist: String, title: String, genre: String)
+  case class Playlist(songs: List[Song]) // command
+  case class PlaylistPurchased(id: Int, songs: List[Song]) // event
+
+  class MusicStoreCheckoutActor extends PersistentActor with ActorLogging {
+    var latestPlaylistId = 0
+    override def persistenceId: String = "music-store-checkout"
+
+    override def receiveCommand: Receive = {
+      case Playlist(songs) =>
+        persist(PlaylistPurchased(latestPlaylistId, songs)) { _ =>
+          log.info(s"User purchased: $songs")
+          latestPlaylistId += 1
+        }
+    }
+
+    override def receiveRecover: Receive = {
+      case event @ PlaylistPurchased(id, _) =>
+        log.info(s"Recovered: $event")
+        latestPlaylistId = id
+    }
+  }
+
 }
 
